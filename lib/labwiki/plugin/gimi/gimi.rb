@@ -33,7 +33,9 @@ class LabWiki::Gimi < OMF::Base::LObject
         puts p
         uuid, name = *(p.split('|'))
         name ||= uuid
-        { uuid: uuid, name: name }
+        # TODO: GENI HACK!!!!
+        urn = "urn:publicid:IDN+ch.geni.net+project+#{name}"
+        { uuid: uuid, name: name, urn: urn }
       end
 
       # After all that it constructs slices as part of project. Sigh...
