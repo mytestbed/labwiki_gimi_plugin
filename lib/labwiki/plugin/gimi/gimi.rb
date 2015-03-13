@@ -40,6 +40,21 @@ class LabWiki::Gimi < OMF::Base::LObject
 
       # After all that it constructs slices as part of project. Sigh...
       OMF::Web::SessionStore[:projects, :user] = projects
+
+      OMF::Web::SessionStore[:current_project, :user] ||= projects.first[:uuid] unless projects.empty?
+    end
+
+    # This will fetch slices via geni portal openid instead of slice service
+    if @opts[:fetch_slices_from_geni_portal] == true
+      OMF::Web::SessionStore[:slices, :user] ||= []
+      if (geni_slices = user['http://geni.net/slices'])
+        geni_slices.each do |s|
+          uuid, project_uuid, name = *(s.split('|'))
+          # FIXME Divya indicates the value of slice select during exp setup shall be its name
+          # This fetch slices from geni thing should go when they start to use slice_service
+          OMF::Web::SessionStore[:slices, :user] << { "name" => name, "slice_urn" => name }
+        end
+      end
     end
   end
 end
