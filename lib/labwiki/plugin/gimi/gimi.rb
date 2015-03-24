@@ -55,7 +55,7 @@ class LabWiki::Gimi < OMF::Base::LObject
           OMF::Web::SessionStore[:slices, :user] << { "name" => name, "slice_urn" => name }
         end
 
-        OMF::Web::SessionStore[:slices, :user].sort! { |v| v["name"] }
+        OMF::Web::SessionStore[:slices, :user].sort! { |a, b| a["name"] <=> b["name"] }
       end
     end
   end
